@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SafeQR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="bi bi-qr-code me-2"></i>SafeQR
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">Edit Profile</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="user-name">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear me-2"></i>Edit Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card dashboard-card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Your Profile</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="avatar-placeholder rounded-circle bg-light mb-3 mx-auto">
+                                <i class="bi bi-person display-4 text-secondary"></i>
+                            </div>
+                            <h4 id="profile-name">Loading...</h4>
+                            <p class="text-muted" id="profile-email">loading@example.com</p>
+                        </div>
+                        <hr>
+                        <div class="profile-completion mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Profile Completion</span>
+                                <span id="completion-percentage">0%</span>
+                            </div>
+                            <div class="progress">
+                                <div id="completion-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <a href="profile.html" class="btn btn-outline-primary">
+                                <i class="bi bi-pencil-square me-2"></i>Edit Your Information
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-qr-code me-2"></i>Your QR Code</h5>
+                        <button class="btn btn-sm btn-light" id="download-qr">
+                            <i class="bi bi-download me-1"></i>Download
+                        </button>
+                    </div>
+                    <div class="card-body text-center py-5">
+                        <div id="loading-qr" class="loading-spinner mx-auto"></div>
+                        <div id="qr-container" class="qr-container d-none">
+                            <div id="qr-code" class="mb-3"></div>
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>Share this QR code with emergency responders or print it on a card, wristband, or keychain.
+                            </div>
+                        </div>
+                        <div id="no-qr-message" class="alert alert-warning d-none">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Please complete your emergency information to generate your QR code.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card dashboard-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Emergency Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="emergency-info-loading" class="loading-spinner mx-auto"></div>
+                        <div id="emergency-info-content" class="d-none">
+                            <!-- Content will be populated by JavaScript -->
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="emergency-info">
+                                        <h6>Medical Information</h6>
+                                        <ul class="list-group list-group-flush" id="medical-info-list">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>Blood Type</span>
+                                                <span id="blood-type" class="badge bg-primary rounded-pill">Not Set</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>Allergies</span>
+                                                <span id="allergies-count" class="badge bg-primary rounded-pill">0</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>Medications</span>
+                                                <span id="medications-count" class="badge bg-primary rounded-pill">0</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>Medical Conditions</span>
+                                                <span id="conditions-count" class="badge bg-primary rounded-pill">0</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="emergency-info">
+                                        <h6>Emergency Contacts</h6>
+                                        <ul class="list-group list-group-flush" id="emergency-contacts-list">
+                                            <li class="list-group-item text-center" id="no-contacts-message">
+                                                No emergency contacts added
+                                            </li>
+                                            <!-- Contacts will be added here -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <a href="profile.html" class="btn btn-primary">
+                                    <i class="bi bi-pencil-square me-2"></i>Update Emergency Information
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h5><i class="bi bi-qr-code me-2"></i>SafeQR</h5>
+                    <p class="mb-0">Emergency information at your fingertips.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white">Terms of Service</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 SafeQR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 

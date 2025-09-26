@@ -1,0 +1,24 @@
+{
+  "name": "safeqr",
+  "version": "1.0.0",
+  "description": "Emergency Information QR Code System",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx live-server --port=3000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "qr",
+    "emergency",
+    "medical",
+    "firebase"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^9.15.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+} 
